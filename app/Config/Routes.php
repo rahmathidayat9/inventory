@@ -1,0 +1,115 @@
+<?php
+
+namespace Config;
+
+// Create a new instance of our RouteCollection class.
+$routes = Services::routes();
+
+/*
+ * --------------------------------------------------------------------
+ * Router Setup
+ * --------------------------------------------------------------------
+ */
+$routes->setDefaultNamespace('App\Controllers');
+$routes->setDefaultController('Home');
+$routes->setDefaultMethod('index');
+$routes->setTranslateURIDashes(false);
+$routes->set404Override();
+// The Auto Routing (Legacy) is very dangerous. It is easy to create vulnerable apps
+// where controller filters or CSRF protection are bypassed.
+// If you don't want to define all routes, please use the Auto Routing (Improved).
+// Set `$autoRoutesImproved` to true in `app/Config/Feature.php` and set the following to true.
+// $routes->setAutoRoute(false);
+
+/*
+ * --------------------------------------------------------------------
+ * Route Definitions
+ * --------------------------------------------------------------------
+ */
+
+// We get a performance increase by specifying the default
+// route since we don't have to scan directories.
+$routes->get('/', 'Home::index');
+$routes->post('login', 'Home::login');
+$routes->get('logout', 'Home::logout');
+
+$routes->group('dashboard', ['filter' => 'appfilter'], static function ($routes) {
+    $routes->get('/', 'Dashboard::index');
+    $routes->get('list-admin', 'Dashboard::listAdmin');
+    $routes->get('list-petugas', 'Dashboard::listPetugas');
+    $routes->post('insert-user', 'Dashboard::insertUser');
+    $routes->get('edit-user', 'Dashboard::editUser');
+    $routes->post('update-user', 'Dashboard::updateUser');
+    $routes->post('delete-user', 'Dashboard::deleteUser');
+    $routes->post('delete-bulk-user', 'Dashboard::deleteBulkUser');
+    $routes->get('list-supplier', 'Dashboard::listSupplier');
+    $routes->post('insert-supplier', 'Dashboard::insertSupplier');
+    $routes->get('edit-supplier', 'Dashboard::editSupplier');
+    $routes->post('update-supplier', 'Dashboard::updateSupplier');
+    $routes->post('delete-supplier', 'Dashboard::deleteSupplier');
+    $routes->get('list-customer', 'Dashboard::listCustomer');
+    $routes->post('insert-customer', 'Dashboard::insertCustomer');
+    $routes->get('edit-customer', 'Dashboard::editCustomer');
+    $routes->post('update-customer', 'Dashboard::updateCustomer');
+    $routes->post('delete-customer', 'Dashboard::deleteCustomer');
+    $routes->post('delete-bulk-customer', 'Dashboard::deleteBulkCustomer');
+    $routes->get('list-rak', 'Dashboard::listRak');
+    $routes->post('insert-rak', 'Dashboard::insertRak');
+    $routes->get('edit-rak', 'Dashboard::editRak');
+    $routes->post('update-rak', 'Dashboard::updateRak');
+    $routes->post('delete-rak', 'Dashboard::deleteRak');
+    $routes->post('delete-bulk-rak', 'Dashboard::deleteBulkRak');
+    $routes->get('list-satuan-barang', 'Dashboard::listSatuanBarang');
+    $routes->post('insert-satuan-barang', 'Dashboard::insertSatuanBarang');
+    $routes->get('edit-satuan-barang', 'Dashboard::editSatuanBarang');
+    $routes->post('update-satuan-barang', 'Dashboard::updateSatuanBarang');
+    $routes->post('delete-satuan-barang', 'Dashboard::deleteSatuanBarang');
+    $routes->post('delete-bulk-satuan-barang', 'Dashboard::deleteBulkSatuanBarang');
+    $routes->get('list-jenis-barang', 'Dashboard::listJenisBarang');
+    $routes->post('insert-jenis-barang', 'Dashboard::insertJenisBarang');
+    $routes->get('edit-jenis-barang', 'Dashboard::editJenisBarang');
+    $routes->post('update-jenis-barang', 'Dashboard::updateJenisBarang');
+    $routes->post('delete-jenis-barang', 'Dashboard::deleteJenisBarang');
+    $routes->post('delete-bulk-jenis-barang', 'Dashboard::deleteBulkJenisBarang');
+    $routes->get('list-barang', 'Dashboard::listBarang');
+    $routes->post('insert-barang', 'Dashboard::insertBarang');
+    $routes->get('edit-barang', 'Dashboard::editBarang');
+    $routes->post('update-barang', 'Dashboard::updateBarang');
+    $routes->post('delete-barang', 'Dashboard::deleteBarang');
+    $routes->post('delete-bulk-barang', 'Dashboard::deleteBulkBarang');
+    $routes->get('list-barang-masuk', 'Dashboard::listBarangMasuk');
+    $routes->get('barang-supplier-filter', 'Dashboard::barangSupplierFilter');
+    $routes->post('insert-barang-masuk', 'Dashboard::insertBarangMasuk');
+    $routes->get('detail-barang-masuk', 'Dashboard::detailBarangMasuk');
+    $routes->post('delete-barang-masuk', 'Dashboard::deleteBarangMasuk');
+    $routes->post('delete-bulk-barang-masuk', 'Dashboard::deleteBulkBarangMasuk');
+    $routes->get('list-barang-keluar', 'Dashboard::listBarangKeluar');
+    $routes->get('barang-rak-filter', 'Dashboard::barangRakFilter');
+    $routes->post('insert-barang-keluar', 'Dashboard::insertBarangKeluar');
+    $routes->get('detail-barang-keluar', 'Dashboard::detailBarangKeluar');
+    $routes->post('delete-barang-keluar', 'Dashboard::deleteBarangKeluar');
+    $routes->post('delete-bulk-barang-keluar', 'Dashboard::deleteBulkBarangKeluar');
+    $routes->get('laporan', 'Dashboard::laporan');
+    $routes->get('ekspor-pdf', 'Dashboard::eksporPdf');
+    $routes->get('setting', 'Dashboard::setting');
+    $routes->get('edit-bulan', 'Dashboard::editBulan');
+    $routes->post('update-bulan', 'Dashboard::updateBulan');
+    $routes->post('update-profil', 'Dashboard::updateProfil');
+});
+
+/*
+ * --------------------------------------------------------------------
+ * Additional Routing
+ * --------------------------------------------------------------------
+ *
+ * There will often be times that you need additional routing and you
+ * need it to be able to override any defaults in this file. Environment
+ * based routes is one such time. require() additional route files here
+ * to make that happen.
+ *
+ * You will have access to the $routes object within that file without
+ * needing to reload it.
+ */
+if (is_file(APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php')) {
+    require APPPATH . 'Config/' . ENVIRONMENT . '/Routes.php';
+}
