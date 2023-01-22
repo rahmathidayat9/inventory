@@ -10,7 +10,18 @@
 <?= $this->section('content') ?>
                 <div class="row">
                     <div class="col-7">
-                        
+                        <?php 
+                            $session = \Config\Services::session();
+
+                            if ($session->getFlashdata('error')) {
+                        ?>
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <?= $session->getFlashdata('error') ?>
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <?php }?>
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">

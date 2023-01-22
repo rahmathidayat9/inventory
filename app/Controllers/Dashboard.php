@@ -1126,15 +1126,22 @@ class Dashboard extends BaseController
         $isi = "";
 
         if ($data == 'barang') {
-            $isi = $this->queryStokBarang();
+            $query = $this->queryStokBarang();
         }
 
         if ($data == 'barang-masuk') {
-            $isi = $this->queryBarangMasuk($tgl_awal, $tgl_akhir);
+            $query = $this->queryBarangMasuk($tgl_awal, $tgl_akhir);
         }
 
         if ($data == 'barang-keluar') {
-            $isi = $this->queryBarangKeluar($tgl_awal, $tgl_akhir);
+            $query = $this->queryBarangKeluar($tgl_awal, $tgl_akhir);
+        }
+
+        if (count($query) > 0) {
+            $isi = $query;
+        } else {
+            $this->session->setFlashdata('error', 'Data yang diminta kosong!');
+            return redirect('dashboard/laporan');
         }
 
         $dompdf = new \Dompdf\Dompdf(); 
