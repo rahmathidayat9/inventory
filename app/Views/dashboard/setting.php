@@ -44,17 +44,14 @@
                 <div class="col-lg-6">
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary"></h6>
-                        <button type="button" class="btn btn-primary btn-sm">
-                            <i class="fas fa-plus fa-fw"></i> GENERATE BULAN
-                        </button>
+                        <h6 class="m-0 font-weight-bold text-primary">Setting Nama Bulan</h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
-                                            <th>Bulan</th>
+                                            <th>Nama Bulan</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>

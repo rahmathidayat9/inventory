@@ -30,6 +30,7 @@
                                         </div>
                                         </th>
                                         <th>Barang</th>
+                                        <th>Jenis Barang</th>
                                         <th>Qty</th>
                                         <th>Tanggal</th>
                                         <th>Petugas</th>
@@ -151,8 +152,12 @@
             order: [],
             columnDefs: [
                 { targets: 0, orderable: false},
-                { orderable: false, targets: 2 },
+                { targets: 1, orderable: false},
+                { targets: 2, orderable: false},
+                { targets: 3, orderable: false},
+                { targets: 4, orderable: false},
                 { targets: 5, orderable: false},
+                { targets: 6, orderable: false},
             ]
         });
 

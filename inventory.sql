@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 22, 2023 at 05:47 PM
+-- Generation Time: Jan 23, 2023 at 03:24 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.1.12
 
@@ -31,14 +31,14 @@ CREATE TABLE `barang` (
   `id` varchar(100) NOT NULL,
   `barang_code` varchar(100) NOT NULL,
   `barang_name` varchar(100) NOT NULL,
-  `barang_deskripsi` varchar(100) DEFAULT NULL,
-  `tanggal` varchar(100) DEFAULT NULL,
+  `barang_deskripsi` varchar(100) NOT NULL,
   `barang_stock` int(11) NOT NULL,
+  `tanggal` text DEFAULT NULL,
   `rak_id` varchar(100) NOT NULL,
   `jenis_barang_id` varchar(100) NOT NULL,
   `satuan_barang_id` varchar(100) NOT NULL,
   `supplier_id` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -49,13 +49,13 @@ CREATE TABLE `barang` (
 CREATE TABLE `barang_keluar` (
   `id` varchar(100) NOT NULL,
   `barang_id` varchar(100) NOT NULL,
-  `qty` int(11) NOT NULL,
-  `customer_id` varchar(100) NOT NULL,
   `user_id` varchar(100) NOT NULL,
+  `customer_id` varchar(100) NOT NULL,
+  `qty` int(11) NOT NULL,
   `keterangan` text DEFAULT NULL,
-  `tanggal` varchar(50) NOT NULL,
+  `tanggal` varchar(25) NOT NULL,
   `no_bulan` varchar(2) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -69,9 +69,9 @@ CREATE TABLE `barang_masuk` (
   `barang_id` varchar(100) NOT NULL,
   `qty` int(11) NOT NULL,
   `user_id` varchar(100) NOT NULL,
-  `tanggal` varchar(50) NOT NULL,
+  `tanggal` varchar(25) NOT NULL,
   `no_bulan` varchar(2) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -83,25 +83,25 @@ CREATE TABLE `bulan_statis` (
   `id` varchar(100) NOT NULL,
   `bulan` varchar(18) DEFAULT NULL,
   `no` int(2) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `bulan_statis`
 --
 
 INSERT INTO `bulan_statis` (`id`, `bulan`, `no`) VALUES
-('3bc174b8-d0b6-4ba2-9a73-6bf6c31e1994', 'Desember', 12),
-('42538846-aced-4d31-8833-089b3ab87712', 'Januari', 1),
-('4554214c-4201-468f-9bd1-724218d1c06d', 'November', 11),
-('6bffe588-422a-45f0-9504-0e43a56ca982', 'Mei', 5),
-('6e687795-a01c-4996-831a-d46c03796fa5', 'Februari', 2),
-('8ce7b6fc-8d9e-4f49-82c3-32f3a7e231ef', 'Agustus', 8),
-('976e1983-bddb-46b6-8fe8-dc5a19701408', 'Oktober', 10),
-('99099db8-9b9c-4e0e-8fa1-4ecb9bdc5c3d', 'Juli', 7),
-('9ec35e7b-5092-4673-adcd-e5d00aeae877', 'September', 9),
-('a2f90dd6-3970-4fa9-9b0d-a250472caef2', 'Juni', 6),
-('ac3ff406-644d-4296-b093-164bd058d372', 'Maret', 3),
-('ef4a0449-e23b-4cff-b71e-eb3375b862b0', 'April', 4);
+('15438512-de28-421c-9116-ee9b67a15b94', 'Agustus', 8),
+('29596d6c-f9c0-42cf-860c-196b16f33d2a', 'Februari', 2),
+('3951e17e-2aaa-4bde-90b4-004ac9f74205', 'November', 11),
+('4923cffb-ecb5-4e59-a261-c8d4addf2bca', 'Januari', 1),
+('56fb55ce-2fc4-4209-9ac1-f7aa45f34dab', 'Mei', 5),
+('59f00d56-3341-4b61-a2b3-ba4466e52ff7', 'April', 4),
+('692fbc22-8ff9-4673-90f2-30c5321d9431', 'Desember', 12),
+('7655b9c0-87ab-4d82-9ad5-39d5ecf585bb', 'Juni', 6),
+('a7759bc0-1214-4b74-98e6-a3542318bfee', 'Maret', 3),
+('ace28df1-9fe8-4db1-97e4-d6e51d929668', 'September', 9),
+('e5df56b9-39c9-4054-a2ef-65f86489b4c8', 'Oktober', 10),
+('e7babd17-8a31-4736-b676-581a3482a2f2', 'Juli', 7);
 
 -- --------------------------------------------------------
 
@@ -112,10 +112,10 @@ INSERT INTO `bulan_statis` (`id`, `bulan`, `no`) VALUES
 CREATE TABLE `customer` (
   `id` varchar(100) NOT NULL,
   `customer_name` varchar(100) NOT NULL,
-  `customer_phone` varchar(15) DEFAULT NULL,
-  `customer_email` varchar(50) DEFAULT NULL,
-  `customer_address` text DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+  `customer_email` varchar(100) DEFAULT NULL,
+  `customer_address` text DEFAULT NULL,
+  `customer_phone` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -126,20 +126,40 @@ CREATE TABLE `customer` (
 CREATE TABLE `jenis_barang` (
   `id` varchar(100) NOT NULL,
   `jenis` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- --------------------------------------------------------
 
 --
--- Dumping data for table `jenis_barang`
+-- Table structure for table `migrations`
 --
 
-INSERT INTO `jenis_barang` (`id`, `jenis`) VALUES
-('156b63be-97ff-4fba-958d-22c88ed1d62d', 'Mainan'),
-('184430e2-43c1-4cd0-9a1d-33741ef11d47', 'Konsumsi'),
-('34c30854-32d5-499e-b491-811f8de87ed5', 'Makanan'),
-('81dac732-42f7-42ca-8a4b-95cac03bbbe0', 'Elektronik'),
-('e09056c7-a208-46a5-b062-e82c547cb3ad', 'Pakaian'),
-('e4ddb311-c8a3-4cc7-a661-4e40eade8e0f', 'Alat Tulis'),
-('ff18ffc8-2eeb-4851-b3d4-d3955e635bf9', 'Kertas');
+CREATE TABLE `migrations` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `version` varchar(255) NOT NULL,
+  `class` varchar(255) NOT NULL,
+  `group` varchar(255) NOT NULL,
+  `namespace` varchar(255) NOT NULL,
+  `time` int(11) NOT NULL,
+  `batch` int(11) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Dumping data for table `migrations`
+--
+
+INSERT INTO `migrations` (`id`, `version`, `class`, `group`, `namespace`, `time`, `batch`) VALUES
+(1, '2023-01-22-165020', 'App\\Database\\Migrations\\User', 'default', 'App', 1674407957, 1),
+(2, '2023-01-22-165434', 'App\\Database\\Migrations\\Role', 'default', 'App', 1674407957, 1),
+(3, '2023-01-22-165558', 'App\\Database\\Migrations\\Supplier', 'default', 'App', 1674407957, 1),
+(4, '2023-01-22-165755', 'App\\Database\\Migrations\\Customer', 'default', 'App', 1674407957, 1),
+(5, '2023-01-22-165932', 'App\\Database\\Migrations\\Bulan', 'default', 'App', 1674407958, 1),
+(6, '2023-01-22-170112', 'App\\Database\\Migrations\\SatuanBarang', 'default', 'App', 1674407958, 1),
+(7, '2023-01-22-170202', 'App\\Database\\Migrations\\Rak', 'default', 'App', 1674407958, 1),
+(8, '2023-01-22-170316', 'App\\Database\\Migrations\\JenisBarang', 'default', 'App', 1674407958, 1),
+(9, '2023-01-22-170401', 'App\\Database\\Migrations\\BarangMasuk', 'default', 'App', 1674407959, 1),
+(10, '2023-01-22-170734', 'App\\Database\\Migrations\\BarangKeluar', 'default', 'App', 1674407959, 1),
+(11, '2023-01-22-171042', 'App\\Database\\Migrations\\Barang', 'default', 'App', 1674407959, 1);
 
 -- --------------------------------------------------------
 
@@ -150,18 +170,7 @@ INSERT INTO `jenis_barang` (`id`, `jenis`) VALUES
 CREATE TABLE `rak` (
   `id` varchar(100) NOT NULL,
   `rak_name` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `rak`
---
-
-INSERT INTO `rak` (`id`, `rak_name`) VALUES
-('1a34ca03-875c-4a6e-b941-c256792d6746', 'RAK-003'),
-('4c99e9c0-48d1-4e67-b735-2c3b5549ce82', 'RAK-001'),
-('5272b21d-cc76-49a5-945e-4afd92522035', 'RAK-004'),
-('ac8ce144-db4f-4abd-85c2-e5b48c5c31af', 'RAK-005'),
-('ede50667-fd02-4428-aa8a-a6b6d21fa727', 'RAK-002');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -172,15 +181,15 @@ INSERT INTO `rak` (`id`, `rak_name`) VALUES
 CREATE TABLE `roles` (
   `id` varchar(100) NOT NULL,
   `role` varchar(100) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `roles`
 --
 
 INSERT INTO `roles` (`id`, `role`) VALUES
-('7432022b-4120-4754-93a5-ff74a2ced0f3', 'petugas'),
-('966dde03-c90e-42aa-b218-001a02c76385', 'admin');
+('29a3e981-4adf-4cb0-8bd9-8956c291c4d9', 'admin'),
+('afe5c0e9-97c4-49bd-87a9-0a5d962eeef0', 'petugas');
 
 -- --------------------------------------------------------
 
@@ -191,17 +200,7 @@ INSERT INTO `roles` (`id`, `role`) VALUES
 CREATE TABLE `satuan_barang` (
   `id` varchar(100) NOT NULL,
   `satuan` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `satuan_barang`
---
-
-INSERT INTO `satuan_barang` (`id`, `satuan`) VALUES
-('2694c8a8-1551-45a9-945e-8f428905fdf5', 'Kg'),
-('3051fbd0-836f-450d-b551-9ec6f5ec416f', 'Pack'),
-('4a944200-3563-4de2-a00b-1f00cdc0336e', 'Pcs'),
-('4b5808f7-a76f-4793-9a75-d3bb760b9d3e', 'Dus');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -213,9 +212,9 @@ CREATE TABLE `supplier` (
   `id` varchar(100) NOT NULL,
   `supplier_name` varchar(100) NOT NULL,
   `supplier_email` varchar(100) DEFAULT NULL,
-  `supplier_address` varchar(100) DEFAULT NULL,
+  `supplier_address` text DEFAULT NULL,
   `supplier_phone` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
@@ -230,16 +229,17 @@ CREATE TABLE `users` (
   `password` varchar(100) NOT NULL,
   `phone` varchar(100) DEFAULT NULL,
   `role_id` varchar(100) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Dumping data for table `users`
 --
 
 INSERT INTO `users` (`id`, `name`, `username`, `password`, `phone`, `role_id`) VALUES
-('1ded8147-c4d1-487b-ad03-edaf134e380e', 'Sensei', 'sensei', '$2y$10$A/JCO1cOiC9H5pEj2rC5yu4MntCtKYcxaK7.3WVGjebDMrtVHAQza', '08576812432', '7432022b-4120-4754-93a5-ff74a2ced0f3'),
-('3d6f0589-3ba8-441b-a842-9bebea6a3bd0', 'Sakamoto', 'petugas', '$2y$10$QhSGAupCJkDq6BIiIeRPyuTzWMl7doplgyfvUTw4.Uwm84SRebeOm', '082155901835', '7432022b-4120-4754-93a5-ff74a2ced0f3'),
-('6bc19aff-b4bb-4d90-9de1-e4b5404f3f24', 'Vivy Diva', 'admin', '$2y$10$VTTXMjMOVy7tgRC970C3wuiMGpW330MfUXqA.9bhxbTY5OrT0xyS.', '085624804713', '966dde03-c90e-42aa-b218-001a02c76385');
+('1e3848c5-384d-4fd2-b0cd-6bb35b8792fa', 'Sensei', 'sensei', '$2y$10$qIr1nYDps3nO7GYKdrT7VuzxPYiU8oV9fI6PvSXuxveE83xGjbeGS', '082155901835', 'afe5c0e9-97c4-49bd-87a9-0a5d962eeef0'),
+('3591e77a-0f6d-484f-8fcb-c9d3cf57012e', 'Hotaru Ichijou', 'hotaru', '$2y$10$n3H7T4fM.aEPW4ZN.w27TeFRsaufkZ5DiSFNsoLZ3.qqe9Ee5uQWK', '085624804713', '29a3e981-4adf-4cb0-8bd9-8956c291c4d9'),
+('3a88e068-8d05-46bb-94c7-aeba06feb718', 'Sakamoto', 'petugas', '$2y$10$OwlHXdFJI5f/cA1PXMsl9OYO4jLXfZxr/UGs77jiZWz9CmVlt9HAu', '082155901835', 'afe5c0e9-97c4-49bd-87a9-0a5d962eeef0'),
+('e42313ff-efa4-482d-94bd-e0aa4f687820', 'Vivy Diva', 'admin', '$2y$10$QP8v51jomcEFuMw2NwOCHeWSooE2.i1CjMNNGRejXrFw3AxAtqG0C', '085624804713', '29a3e981-4adf-4cb0-8bd9-8956c291c4d9');
 
 --
 -- Indexes for dumped tables
@@ -282,6 +282,12 @@ ALTER TABLE `jenis_barang`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `migrations`
+--
+ALTER TABLE `migrations`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `rak`
 --
 ALTER TABLE `rak`
@@ -310,6 +316,16 @@ ALTER TABLE `supplier`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `migrations`
+--
+ALTER TABLE `migrations`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

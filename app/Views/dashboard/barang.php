@@ -30,8 +30,8 @@
                                             <label class="custom-control-label" for="checkbox-all"></label>
                                         </div>
                                         </th>
-                                        <th>Nama Barang</th>
-                                        <th>Kode</th>
+                                        <th>Barang</th>
+                                        <th>Jenis Barang</th>
                                         <th>Stok</th>
                                         <th>Rak</th>
                                         <th>Supplier</th>
@@ -156,6 +156,7 @@
             order: [],
             columnDefs: [
                 { targets: 0, orderable: false},
+                { targets: 1, orderable: false},
                 { targets: 2, orderable: false},
                 { targets: 3, orderable: false},
                 { targets: 4, orderable: false},

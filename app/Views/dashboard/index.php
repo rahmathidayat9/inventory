@@ -212,7 +212,7 @@
 
                 <div class="row">
                 <!-- Barang Masuk & Keluar Chart -->
-                <div class="col-xl-6 col-lg-4">
+                <div class="col-xl-4 col-lg-4">
                     <div class="card shadow mb-4">
                         <!-- Card Header - Dropdown -->
                         <div
@@ -229,7 +229,7 @@
                 </div>
 
                 <!-- Jenis Barang Chart -->
-                <div class="col-xl-6 col-lg-8">
+                <div class="col-xl-8 col-lg-8">
                     <div class="card shadow mb-4">
                         <!-- Card Header - Dropdown -->
                         <div

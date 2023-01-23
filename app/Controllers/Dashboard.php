@@ -40,7 +40,7 @@ class Dashboard extends BaseController
             
             $overview_rak = $this->db->query("SELECT rak.rak_name , COUNT(barang.id) AS total_barang, COALESCE(SUM(barang.barang_stock), 0) AS qty FROM rak LEFT JOIN barang ON rak.id = barang.rak_id GROUP BY rak.rak_name ORDER BY rak.rak_name ASC")->getResultArray();
             $top_five_supplier = $this->db->query("SELECT supplier.supplier_name, COUNT(barang.id) AS total_barang FROM supplier JOIN barang ON supplier.id = barang.supplier_id GROUP BY supplier.supplier_name ORDER BY total_barang DESC LIMIT 5")->getResultArray();
-            $jenis_barang_chart = $this->db->query("SELECT jenis_barang.jenis AS jenis_barang,COUNT(barang.id) AS total_barang, SUM(barang.barang_stock) AS stock_barang FROM jenis_barang JOIN barang ON jenis_barang.id=barang.jenis_barang_id GROUP BY jenis_barang.jenis")->getResultArray();
+            $jenis_barang_chart = $this->db->query("SELECT jenis_barang.jenis AS jenis_barang,COUNT(barang.id) AS total_barang, COALESCE(SUM(barang.barang_stock), 0) AS stock_barang FROM jenis_barang LEFT JOIN barang ON jenis_barang.id=barang.jenis_barang_id GROUP BY jenis_barang.jenis")->getResultArray();
             $barang_masuk_chart = $this->db->query("SELECT bulan_statis.bulan,COUNT(barang_masuk.id) AS jumlah_masuk FROM bulan_statis LEFT JOIN barang_masuk ON bulan_statis.no=barang_masuk.no_bulan AND YEAR(barang_masuk.tanggal) = '".$tahun."' GROUP BY bulan_statis.bulan ORDER BY bulan_statis.no ASC")->getResultArray();
             $barang_keluar_chart = $this->db->query("SELECT bulan_statis.bulan,COUNT(barang_keluar.id) AS jumlah_keluar FROM bulan_statis LEFT JOIN barang_keluar ON bulan_statis.no=barang_keluar.no_bulan AND YEAR(barang_keluar.tanggal) = '".$tahun."' GROUP BY bulan_statis.bulan ORDER BY bulan_statis.no ASC")->getResultArray();
 
@@ -689,11 +689,12 @@ class Dashboard extends BaseController
     {
         if ($this->request->isAJAX()) {
             $builder = $this->db->table('barang')
-                ->select('barang.id, barang.barang_name, barang.barang_code, 
+                ->select('barang.id, barang.barang_name, jenis_barang.jenis AS jenis_barang, 
                 CONCAT(barang.barang_stock, " ", satuan_barang.satuan) AS stock, rak.rak_name, supplier.supplier_name')
                 ->join('satuan_barang', 'satuan_barang.id = barang.satuan_barang_id')
                 ->join('rak', 'rak.id = barang.rak_id')
                 ->join('supplier', 'supplier.id = barang.supplier_id')
+                ->join('jenis_barang', 'jenis_barang.id=barang.jenis_barang_id')
                 ->orderBy('barang.tanggal', 'DESC');
 
             return DataTable::of($builder)
@@ -824,10 +825,11 @@ class Dashboard extends BaseController
     {
         if ($this->request->isAJAX()) {
             $builder = $this->db->table('barang_masuk')
-                ->select('barang_masuk.id,barang.barang_name,supplier.supplier_name,CONCAT(barang_masuk.qty, " ", satuan_barang.satuan) AS qty,DATE(barang_masuk.tanggal) AS tanggal,users.name AS petugas')
+                ->select('barang_masuk.id,barang.barang_name,jenis_barang.jenis AS jenis_barang,supplier.supplier_name,CONCAT(barang_masuk.qty, " ", satuan_barang.satuan) AS qty,DATE(barang_masuk.tanggal) AS tanggal,users.name AS petugas')
                 ->join('supplier', 'supplier.id = barang_masuk.supplier_id')
                 ->join('barang', 'barang.id = barang_masuk.barang_id')
                 ->join('satuan_barang', 'satuan_barang.id = barang.satuan_barang_id')
+                ->join('jenis_barang', 'jenis_barang.id = barang.jenis_barang_id')
                 ->join('users', 'users.id = barang_masuk.user_id')
                 ->orderBy('barang_masuk.tanggal', 'DESC');
 
@@ -955,9 +957,10 @@ class Dashboard extends BaseController
     {
         if ($this->request->isAJAX()) {
             $builder = $this->db->table('barang_keluar')
-                ->select('barang_keluar.id,barang.barang_name,CONCAT(barang_keluar.qty, " ", satuan_barang.satuan) AS qty,barang_keluar.tanggal,users.name AS petugas')
+                ->select('barang_keluar.id,barang.barang_name,jenis_barang.jenis AS jenis_barang,CONCAT(barang_keluar.qty, " ", satuan_barang.satuan) AS qty,barang_keluar.tanggal,users.name AS petugas')
                 ->join('barang', 'barang.id = barang_keluar.barang_id')
                 ->join('satuan_barang', 'satuan_barang.id = barang.satuan_barang_id')
+                ->join('jenis_barang', 'jenis_barang.id = barang.jenis_barang_id')
                 ->join('users', 'users.id = barang_keluar.user_id')
                 ->orderBy('barang_keluar.tanggal', 'DESC');
 
@@ -1099,21 +1102,21 @@ class Dashboard extends BaseController
     /* Ekspor Pdf Query */
     public function queryBarangMasuk($tgl_awal, $tgl_akhir)
     {
-        $query = $this->db->query("SELECT barang.barang_name, supplier.supplier_name, CONCAT(barang_masuk.qty, ' ', satuan_barang.satuan) AS qty, DATE(barang_masuk.tanggal) AS tanggal, users.name AS petugas FROM barang_masuk JOIN supplier ON supplier.id = barang_masuk.supplier_id JOIN barang ON barang.id = barang_masuk.barang_id JOIN satuan_barang ON satuan_barang.id = barang.satuan_barang_id JOIN users ON users.id = barang_masuk.user_id WHERE DATE(barang_masuk.tanggal) BETWEEN '".$tgl_awal."' AND '".$tgl_akhir."' ORDER BY barang_masuk.tanggal DESC")->getResultArray();
+        $query = $this->db->query("SELECT barang.barang_name, jenis_barang.jenis AS jenis_barang, supplier.supplier_name, CONCAT(barang_masuk.qty, ' ', satuan_barang.satuan) AS qty, DATE(barang_masuk.tanggal) AS tanggal, users.name AS petugas FROM barang_masuk JOIN supplier ON supplier.id = barang_masuk.supplier_id JOIN barang ON barang.id = barang_masuk.barang_id JOIN satuan_barang ON satuan_barang.id = barang.satuan_barang_id JOIN users ON users.id = barang_masuk.user_id JOIN jenis_barang ON jenis_barang.id=barang.jenis_barang_id WHERE DATE(barang_masuk.tanggal) BETWEEN '".$tgl_awal."' AND '".$tgl_akhir."' ORDER BY barang_masuk.tanggal DESC")->getResultArray();
 
         return $query;
     }
 
     public function queryBarangKeluar($tgl_awal, $tgl_akhir)
     {
-        $query = $this->db->query("SELECT barang.barang_name, CONCAT(barang_keluar.qty, ' ', satuan_barang.satuan) AS qty ,DATE(barang_keluar.tanggal) AS tanggal,users.name AS petugas FROM barang_keluar JOIN barang ON barang.id = barang_keluar.barang_id JOIN satuan_barang ON satuan_barang.id = barang.satuan_barang_id JOIN users ON users.id = barang_keluar.user_id WHERE DATE(barang_keluar.tanggal) BETWEEN '".$tgl_awal."' AND '".$tgl_akhir."' ORDER BY barang_keluar.tanggal DESC")->getResultArray();
+        $query = $this->db->query("SELECT barang.barang_name, jenis_barang.jenis AS jenis_barang, CONCAT(barang_keluar.qty, ' ', satuan_barang.satuan) AS qty ,DATE(barang_keluar.tanggal) AS tanggal,users.name AS petugas FROM barang_keluar JOIN barang ON barang.id = barang_keluar.barang_id JOIN satuan_barang ON satuan_barang.id = barang.satuan_barang_id JOIN users ON users.id = barang_keluar.user_id JOIN jenis_barang ON jenis_barang.id=barang.jenis_barang_id WHERE DATE(barang_keluar.tanggal) BETWEEN '".$tgl_awal."' AND '".$tgl_akhir."' ORDER BY barang_keluar.tanggal DESC")->getResultArray();
 
         return $query;
     }
 
     public function queryStokBarang()
     {
-        $query = $this->db->query("SELECT barang.id, barang.barang_name, barang.barang_code, CONCAT(barang.barang_stock, ' ',satuan_barang.satuan) AS stock, rak.rak_name, supplier.supplier_name FROM barang JOIN satuan_barang ON satuan_barang.id = barang.satuan_barang_id JOIN rak ON rak.id = barang.rak_id JOIN supplier ON supplier.id = barang.supplier_id ORDER BY rak.rak_name ASC")->getResultArray();
+        $query = $this->db->query("SELECT barang.id, barang.barang_name, jenis_barang.jenis AS jenis_barang, barang.barang_code, CONCAT(barang.barang_stock, ' ',satuan_barang.satuan) AS stock, rak.rak_name, supplier.supplier_name FROM barang JOIN satuan_barang ON satuan_barang.id = barang.satuan_barang_id JOIN rak ON rak.id = barang.rak_id JOIN supplier ON supplier.id = barang.supplier_id JOIN jenis_barang ON jenis_barang.id=barang.jenis_barang_id ORDER BY rak.rak_name ASC")->getResultArray();
 
         return $query;
     }

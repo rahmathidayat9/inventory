@@ -30,6 +30,7 @@ table tr:nth-child(odd) {
   <tr>
     <th>No</th>
     <th>Barang</th>
+    <th>Jenis Barang</th>
     <th>Stok</th>
     <th>Kode Barang</th>
     <th>Supplier</th> 
@@ -40,6 +41,7 @@ table tr:nth-child(odd) {
     <tr>
       <td><?= $nilai_awal++ ?></td>
       <td><?= $data['barang_name'] ?></td>
+      <td><?= $data['jenis_barang'] ?></td>
       <td><?= $data['stock'] ?></td>
       <td><?= $data['barang_code'] ?></td>
       <td><?= $data['supplier_name'] ?></td>
