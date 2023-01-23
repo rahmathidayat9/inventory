@@ -957,11 +957,12 @@ class Dashboard extends BaseController
     {
         if ($this->request->isAJAX()) {
             $builder = $this->db->table('barang_keluar')
-                ->select('barang_keluar.id,barang.barang_name,jenis_barang.jenis AS jenis_barang,CONCAT(barang_keluar.qty, " ", satuan_barang.satuan) AS qty,barang_keluar.tanggal,users.name AS petugas')
+                ->select('barang_keluar.id,barang.barang_name,jenis_barang.jenis AS jenis_barang,CONCAT(barang_keluar.qty, " ", satuan_barang.satuan) AS qty,barang_keluar.tanggal,customer.customer_name,users.name AS petugas')
                 ->join('barang', 'barang.id = barang_keluar.barang_id')
                 ->join('satuan_barang', 'satuan_barang.id = barang.satuan_barang_id')
                 ->join('jenis_barang', 'jenis_barang.id = barang.jenis_barang_id')
                 ->join('users', 'users.id = barang_keluar.user_id')
+                ->join('customer', 'customer.id=barang_keluar.customer_id')
                 ->orderBy('barang_keluar.tanggal', 'DESC');
 
             return DataTable::of($builder)
@@ -981,8 +982,8 @@ class Dashboard extends BaseController
                 ->toJson();
         }
 
-        $rak = $this->db->table('rak')
-            ->orderBy('rak_name', 'ASC')
+        $jenis_barang = $this->db->table('jenis_barang')
+            ->orderBy('jenis', 'ASC')
             ->get()
             ->getResultArray();
 
@@ -993,19 +994,19 @@ class Dashboard extends BaseController
 
         return view('dashboard/barang-keluar', [
             'title' => 'Barang Keluar',
-            'rak' => $rak,
+            'jenis_barang' => $jenis_barang,
             'customer' => $customer,
         ]);
     }
 
-    public function barangRakFilter()
+    public function filterJenisBarang()
     {
-        $rak_id = $this->request->getVar('rak_id');
+        $jenis_barang_id = $this->request->getVar('jenis_barang_id');
 
         $data = $this->db->table('barang')
             ->join('satuan_barang', 'satuan_barang.id=barang.satuan_barang_id')
-            ->where('rak_id', $rak_id)
-            ->select('barang.id,barang.barang_name,satuan_barang.satuan,barang.barang_stock')
+            ->where('jenis_barang_id', $jenis_barang_id)
+            ->select('barang.id,barang.jenis_barang_id,barang.barang_name,satuan_barang.satuan,barang.barang_stock')
             ->get()
             ->getResultArray();
         
@@ -1057,7 +1058,7 @@ class Dashboard extends BaseController
 
         $barang_keluar = $this->db->table('barang_keluar')
             ->where('barang_keluar.id', $id)
-            ->select('barang_keluar.id,barang_keluar.barang_id,barang_keluar.keterangan,barang_keluar.qty,barang_keluar.customer_id,barang_keluar.tanggal,barang.barang_stock,barang.rak_id')
+            ->select('barang_keluar.id,barang_keluar.barang_id,barang_keluar.keterangan,barang_keluar.qty,barang_keluar.customer_id,barang_keluar.tanggal,barang.barang_stock,barang.jenis_barang_id')
             ->join('barang', 'barang.id=barang_keluar.barang_id')
             ->get()
             ->getRowArray();
@@ -1114,9 +1115,9 @@ class Dashboard extends BaseController
         return $query;
     }
 
-    public function queryStokBarang()
+    public function queryStokBarang($tgl_awal, $tgl_akhir)
     {
-        $query = $this->db->query("SELECT barang.id, barang.barang_name, jenis_barang.jenis AS jenis_barang, barang.barang_code, CONCAT(barang.barang_stock, ' ',satuan_barang.satuan) AS stock, rak.rak_name, supplier.supplier_name FROM barang JOIN satuan_barang ON satuan_barang.id = barang.satuan_barang_id JOIN rak ON rak.id = barang.rak_id JOIN supplier ON supplier.id = barang.supplier_id JOIN jenis_barang ON jenis_barang.id=barang.jenis_barang_id ORDER BY rak.rak_name ASC")->getResultArray();
+        $query = $this->db->query("SELECT barang.id, barang.barang_name, jenis_barang.jenis AS jenis_barang, barang.barang_code, CONCAT(barang.barang_stock, ' ',satuan_barang.satuan) AS stock, rak.rak_name, supplier.supplier_name FROM barang JOIN satuan_barang ON satuan_barang.id = barang.satuan_barang_id JOIN rak ON rak.id = barang.rak_id JOIN supplier ON supplier.id = barang.supplier_id JOIN jenis_barang ON jenis_barang.id=barang.jenis_barang_id WHERE DATE(barang.tanggal) BETWEEN '".$tgl_awal."' AND '".$tgl_akhir."' ORDER BY rak.rak_name ASC")->getResultArray();
 
         return $query;
     }
@@ -1129,7 +1130,7 @@ class Dashboard extends BaseController
         $isi = "";
 
         if ($data == 'barang') {
-            $query = $this->queryStokBarang();
+            $query = $this->queryStokBarang($tgl_awal, $tgl_akhir);
         }
 
         if ($data == 'barang-masuk') {

@@ -76,22 +76,16 @@
             let tgl_awal = $("#tgl_awal").val()
             let tgl_akhir = $("#tgl_akhir").val()
             let tipe = $(this).data('tipe')
-            let ekspor_url = ""
             
-            if (tipe !== 'barang' && tgl_awal.length == 0) {
+            if (tgl_awal.length == 0) {
                 toastr.error('Pilih tanggal awal & tanggal akhir terlebih dahulu!')
                 return false;
-            } else if(tipe !== 'barang' && tgl_akhir.length == 0) {
+            } else if(tgl_akhir.length == 0) {
                 toastr.error('Pilih tanggal awal & tanggal akhir terlebih dahulu!')
                 return false;
             }
 
-            if (tipe == 'barang') {
-                ekspor_url = '<?= base_url() ?>/dashboard/ekspor-pdf?data='+tipe
-            } else {
-                ekspor_url = '<?= base_url() ?>/dashboard/ekspor-pdf?data='+tipe+'&tgl_awal='+tgl_awal+'&tgl_akhir='+tgl_akhir
-            }
-
+            let ekspor_url = '<?= base_url() ?>/dashboard/ekspor-pdf?data='+tipe+'&tgl_awal='+tgl_awal+'&tgl_akhir='+tgl_akhir
             window.open(ekspor_url, '_blank')
         });
     });

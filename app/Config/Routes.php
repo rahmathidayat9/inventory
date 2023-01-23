@@ -84,7 +84,7 @@ $routes->group('dashboard', ['filter' => 'appfilter'], static function ($routes)
     $routes->post('delete-barang-masuk', 'Dashboard::deleteBarangMasuk');
     $routes->post('delete-bulk-barang-masuk', 'Dashboard::deleteBulkBarangMasuk');
     $routes->get('list-barang-keluar', 'Dashboard::listBarangKeluar');
-    $routes->get('barang-rak-filter', 'Dashboard::barangRakFilter');
+    $routes->get('filter-jenis-barang', 'Dashboard::filterJenisBarang');
     $routes->post('insert-barang-keluar', 'Dashboard::insertBarangKeluar');
     $routes->get('detail-barang-keluar', 'Dashboard::detailBarangKeluar');
     $routes->post('delete-barang-keluar', 'Dashboard::deleteBarangKeluar');

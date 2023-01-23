@@ -33,6 +33,7 @@
                                         <th>Jenis Barang</th>
                                         <th>Qty</th>
                                         <th>Tanggal</th>
+                                        <th>Customer</th>
                                         <th>Petugas</th>
                                         <th>Action</th>
                                     </tr>
@@ -58,11 +59,11 @@
                         <form id="submitForm">
                             <div class="row">
                                 <div class="form-group col-6">
-                                    <label for="rak_id">Rak:</label>
-                                    <select required name="rak_id" id="rak_id" class="form-control">
-                                        <option value="" disabled selected>- RAK -</option>
-                                        <?php foreach($rak as $rak) { ?>
-                                            <option value="<?= $rak['id'] ?>"><?= $rak['rak_name'] ?></option>    
+                                    <label for="jenis_barang_id">Jenis Barang:</label>
+                                    <select required name="jenis_barang_id" id="jenis_barang_id" class="form-control">
+                                        <option value="" disabled selected>- Jenis Barang -</option>
+                                        <?php foreach($jenis_barang as $jenis_barang) { ?>
+                                            <option value="<?= $jenis_barang['id'] ?>"><?= $jenis_barang['jenis'] ?></option>    
                                         <?php } ?>
                                     </select>
                                 </div>
@@ -158,19 +159,20 @@
                 { targets: 4, orderable: false},
                 { targets: 5, orderable: false},
                 { targets: 6, orderable: false},
+                { targets: 7, orderable: false},
             ]
         });
 
-        /* Filter Barang Of Supplier */
-        $("#rak_id").change(function() {
-            let rak_id = $(this).val()
-            let rak_name = $(this).find(':selected').text()
+        /* Filter Barang Of Jenis Barang */
+        $("#jenis_barang_id").change(function() {
+            let jenis_barang_id = $(this).val()
+            let jenis = $(this).find(':selected').text()
 
             $.ajax({
                 type: "GET",
-                url: "<?= base_url() ?>/dashboard/barang-rak-filter",
+                url: "<?= base_url() ?>/dashboard/filter-jenis-barang",
                 data: {
-                  rak_id: rak_id  
+                  jenis_barang_id: jenis_barang_id
                 },
                 dataType: "JSON",
                 success: function (response) {
@@ -183,7 +185,7 @@
                         })   
                     } else {
                         $("#satuan_barang").html('')
-                        list_barang = `<option disabled selected>Tidak ada barang di ${rak_name}!</option>`
+                        list_barang = `<option disabled selected>Tidak ada barang di ${jenis}!</option>`
                     }
 
                     $("#barang_id").html(list_barang)
@@ -212,7 +214,7 @@
         })
 
         $("#addBtn").click(function() {
-            removeInputValues(['barang_keluar_id', 'barang_id', 'customer_id', 'rak_id', 'qty', 'keterangan'])
+            removeInputValues(['barang_keluar_id', 'barang_id', 'customer_id', 'jenis_barang_id', 'qty', 'keterangan'])
             $("#tgl").val("<?= date('Y-m-d') ?>")
             $("#formModalLabel").html('Barang Keluar')
             $("#satuan_barang").html(``)
@@ -220,7 +222,7 @@
             $("#barang_stock").val(``)
             $("#barang_id").html("<option disabled selected>- BARANG -</option>")
             $("#saveBtn").show()
-            $("#rak_id").prop('disabled', false)
+            $("#jenis_barang_id").prop('disabled', false)
             $("#barang_id").prop('disabled', false)
             $("#qty").prop('disabled', false)
             $("#customer_id").prop('disabled', false)
@@ -251,13 +253,13 @@
                     let barang_keluar = response.data
                     $("#formModal").modal('show')
                     $("#barang_keluar_id").val(barang_keluar.id)
-                    $("#rak_id").val(barang_keluar.rak_id)
+                    $("#jenis_barang_id").val(barang_keluar.jenis_barang_id)
                     $("#qty").val(barang_keluar.qty)
                     $("#customer_id").val(barang_keluar.customer_id)
                     $("#keterangan").val(barang_keluar.keterangan)
                     $("#tgl").val(barang_keluar.tanggal)
 
-                    $("#rak_id").prop('disabled', true)
+                    $("#jenis_barang_id").prop('disabled', true)
                     $("#barang_id").prop('disabled', true)
                     $("#qty").prop('disabled', true)
                     $("#customer_id").prop('disabled', true)
@@ -265,9 +267,9 @@
 
                     $.ajax({
                         type: "GET",
-                        url: "<?= base_url() ?>/dashboard/barang-rak-filter",
+                        url: "<?= base_url() ?>/dashboard/filter-jenis-barang",
                         data: {
-                            rak_id: barang_keluar.rak_id  
+                            jenis_barang_id: barang_keluar.jenis_barang_id  
                         },
                         dataType: "JSON",
                         success: function (response) {
@@ -328,7 +330,7 @@
                 dataType: "JSON",
                 success: function (response) {
                     showToast('success', response.message, 300)
-                    removeInputValues(['barang_keluar_id', 'barang_id', 'customer_id', 'rak_id', 'qty', 'keterangan'])
+                    removeInputValues(['barang_keluar_id', 'barang_id', 'customer_id', 'jenis_barang_id', 'qty', 'keterangan'])
                     $("#formModal").modal('hide')
                     // datatable.ajax.reload()
                     setTimeout(() => {
