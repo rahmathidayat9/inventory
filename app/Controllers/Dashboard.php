@@ -119,11 +119,11 @@ class Dashboard extends BaseController
         $this->db->table('users')
             ->insert([
                 'id' => Uuid::uuid4(),
-                'username' => $this->request->getVar('username'),
-                'name' => $this->request->getVar('name'),
+                'username' => esc($this->request->getVar('username')),
+                'name' => esc($this->request->getVar('name')),
                 'password' => password_hash($this->request->getVar('password'), PASSWORD_BCRYPT),
-                'phone' => $this->request->getVar('phone'),
-                'role_id' => $this->request->getVar('role_id'),                
+                'phone' => esc($this->request->getVar('phone')),
+                'role_id' => esc($this->request->getVar('role_id')),                
             ]);
         
         return $this->response->setJSON([
@@ -161,10 +161,10 @@ class Dashboard extends BaseController
         $this->db->table('users')
             ->where('id', $id)
             ->update([
-                'username' => $this->request->getVar('username'),
-                'name' => $this->request->getVar('name'),
+                'username' => esc($this->request->getVar('username')),
+                'name' => esc($this->request->getVar('name')),
                 'password' => $password,
-                'phone' => $this->request->getVar('phone'),                
+                'phone' => esc($this->request->getVar('phone')),                
             ]);
         
         return $this->response->setJSON([
@@ -230,10 +230,10 @@ class Dashboard extends BaseController
         $this->db->table('supplier')
             ->insert([
                 'id' => Uuid::uuid4(),
-                'supplier_name' => $this->request->getVar('supplier_name'),
-                'supplier_email' => $this->request->getVar('supplier_email'),
-                'supplier_address' => $this->request->getVar('supplier_address'),
-                'supplier_phone' => $this->request->getVar('supplier_phone'),                
+                'supplier_name' => esc($this->request->getVar('supplier_name')),
+                'supplier_email' => esc($this->request->getVar('supplier_email')),
+                'supplier_address' => esc($this->request->getVar('supplier_address')),
+                'supplier_phone' => esc($this->request->getVar('supplier_phone')),                
             ]);
         
         return $this->response->setJSON([
@@ -262,10 +262,10 @@ class Dashboard extends BaseController
         $this->db->table('supplier')
             ->where('id', $id)
             ->update([
-                'supplier_name' => $this->request->getVar('supplier_name'),
-                'supplier_email' => $this->request->getVar('supplier_email'),
-                'supplier_phone' => $this->request->getVar('supplier_phone'),
-                'supplier_address' => $this->request->getVar('supplier_address'),                
+                'supplier_name' => esc($this->request->getVar('supplier_name')),
+                'supplier_email' => esc($this->request->getVar('supplier_email')),
+                'supplier_phone' => esc($this->request->getVar('supplier_phone')),
+                'supplier_address' => esc($this->request->getVar('supplier_address')),                
             ]);
         
         return $this->response->setJSON([
@@ -331,10 +331,10 @@ class Dashboard extends BaseController
         $this->db->table('customer')
             ->insert([
                 'id' => Uuid::uuid4(),
-                'customer_name' => $this->request->getVar('customer_name'),
-                'customer_email' => $this->request->getVar('customer_email'),
-                'customer_address' => $this->request->getVar('customer_address'),
-                'customer_phone' => $this->request->getVar('customer_phone'),                
+                'customer_name' => esc($this->request->getVar('customer_name')),
+                'customer_email' => esc($this->request->getVar('customer_email')),
+                'customer_address' => esc($this->request->getVar('customer_address')),
+                'customer_phone' => esc($this->request->getVar('customer_phone')),                
             ]);
         
         return $this->response->setJSON([
@@ -363,10 +363,10 @@ class Dashboard extends BaseController
         $this->db->table('customer')
             ->where('id', $id)
             ->update([
-                'customer_name' => $this->request->getVar('customer_name'),
-                'customer_email' => $this->request->getVar('customer_email'),
-                'customer_phone' => $this->request->getVar('customer_phone'),
-                'customer_address' => $this->request->getVar('customer_address'),                
+                'customer_name' => esc($this->request->getVar('customer_name')),
+                'customer_email' => esc($this->request->getVar('customer_email')),
+                'customer_phone' => esc($this->request->getVar('customer_phone')),
+                'customer_address' => esc($this->request->getVar('customer_address')),                
             ]);
         
         return $this->response->setJSON([
@@ -433,7 +433,7 @@ class Dashboard extends BaseController
         $this->db->table('rak')
             ->insert([
                 'id' => Uuid::uuid4(),
-                'rak_name' => $this->request->getVar('rak_name'),
+                'rak_name' => esc($this->request->getVar('rak_name')),
             ]);
         
         return $this->response->setJSON([
@@ -462,7 +462,7 @@ class Dashboard extends BaseController
         $this->db->table('rak')
             ->where('id', $id)
             ->update([
-                'rak_name' => $this->request->getVar('rak_name'),            
+                'rak_name' => esc($this->request->getVar('rak_name')),            
             ]);
         
         return $this->response->setJSON([
@@ -528,7 +528,7 @@ class Dashboard extends BaseController
         $this->db->table('satuan_barang')
             ->insert([
                 'id' => Uuid::uuid4(),
-                'satuan' => $this->request->getVar('satuan'),
+                'satuan' => esc($this->request->getVar('satuan')),
             ]);
         
         return $this->response->setJSON([
@@ -557,7 +557,7 @@ class Dashboard extends BaseController
         $this->db->table('satuan_barang')
             ->where('id', $id)
             ->update([
-                'satuan' => $this->request->getVar('satuan'),
+                'satuan' => esc($this->request->getVar('satuan')),
             ]);
         
         return $this->response->setJSON([
@@ -623,7 +623,7 @@ class Dashboard extends BaseController
         $this->db->table('jenis_barang')
             ->insert([
                 'id' => Uuid::uuid4(),
-                'jenis' => $this->request->getVar('jenis'),
+                'jenis' => esc($this->request->getVar('jenis')),
             ]);
         
         return $this->response->setJSON([
@@ -652,7 +652,7 @@ class Dashboard extends BaseController
         $this->db->table('jenis_barang')
             ->where('id', $id)
             ->update([
-                'jenis' => $this->request->getVar('jenis'),
+                'jenis' => esc($this->request->getVar('jenis')),
             ]);
         
         return $this->response->setJSON([
@@ -748,13 +748,13 @@ class Dashboard extends BaseController
             ->insert([
                 'id' => Uuid::uuid4(),
                 'barang_code' => 'BRG'.random_int(70000, 90000),
-                'barang_name' => $this->request->getVar('barang_name'),
-                'barang_stock' => $this->request->getVar('barang_stock'),
-                'satuan_barang_id' => $this->request->getVar('satuan_barang_id'),
-                'rak_id' => $this->request->getVar('rak_id'),
-                'jenis_barang_id' => $this->request->getVar('jenis_barang_id'),
-                'supplier_id' => $this->request->getVar('supplier_id'),
-                'tanggal' => $tanggal,
+                'barang_name' => esc($this->request->getVar('barang_name')),
+                'barang_stock' => esc($this->request->getVar('barang_stock')),
+                'satuan_barang_id' => esc($this->request->getVar('satuan_barang_id')),
+                'rak_id' => esc($this->request->getVar('rak_id')),
+                'jenis_barang_id' => esc($this->request->getVar('jenis_barang_id')),
+                'supplier_id' => esc($this->request->getVar('supplier_id')),
+                'tanggal' => esc($tanggal),
             ]);
         
         return $this->response->setJSON([
@@ -783,12 +783,12 @@ class Dashboard extends BaseController
         $this->db->table('barang')
             ->where('id', $id)
             ->update([
-                'barang_name' => $this->request->getVar('barang_name'),
-                'barang_stock' => $this->request->getVar('barang_stock'),
-                'satuan_barang_id' => $this->request->getVar('satuan_barang_id'),
-                'rak_id' => $this->request->getVar('rak_id'),
-                'jenis_barang_id' => $this->request->getVar('jenis_barang_id'),
-                'supplier_id' => $this->request->getVar('supplier_id'),
+                'barang_name' => esc($this->request->getVar('barang_name')),
+                'barang_stock' => esc($this->request->getVar('barang_stock')),
+                'satuan_barang_id' => esc($this->request->getVar('satuan_barang_id')),
+                'rak_id' => esc($this->request->getVar('rak_id')),
+                'jenis_barang_id' => esc($this->request->getVar('jenis_barang_id')),
+                'supplier_id' => esc($this->request->getVar('supplier_id')),
             ]);
         
         return $this->response->setJSON([
@@ -891,9 +891,9 @@ class Dashboard extends BaseController
         $this->db->table('barang_masuk')
             ->insert([
                 'id' => Uuid::uuid4(),
-                'barang_id' => $barang_id,
-                'supplier_id' => $this->request->getVar('supplier_id'),
-                'qty' => $qty,
+                'barang_id' => esc($barang_id),
+                'supplier_id' => esc($this->request->getVar('supplier_id')),
+                'qty' => esc($qty),
                 'user_id' => user('id'),
                 'tanggal' => $tanggal,
                 'no_bulan' => date('n'),
@@ -1032,9 +1032,9 @@ class Dashboard extends BaseController
                 'id' => Uuid::uuid4(),
                 'barang_id' => $barang_id,
                 'customer_id' => $this->request->getVar('customer_id'),
-                'qty' => $qty,
+                'qty' => esc($qty),
                 'user_id' => user('id'),
-                'keterangan' => $this->request->getVar('keterangan'),
+                'keterangan' => esc($this->request->getVar('keterangan')),
                 'tanggal' => $tanggal,
                 'no_bulan' => date('n'),
             ]);

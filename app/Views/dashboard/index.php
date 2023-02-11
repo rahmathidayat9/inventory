@@ -339,6 +339,7 @@
                         },
                         options: {
                             responsive: true,
+                            maintainAspectRatio: false,
                             scales: {
                                 yAxes: [{
                                     ticks: {
@@ -402,6 +403,7 @@
                     },
                     options: {
                         responsive: true,
+                        maintainAspectRatio: false,
                         scales: {
                             xAxes: [{
                                 stacked: true,
@@ -442,6 +444,8 @@
                         }]
                     },
                     options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
                         scales: {
                             xAxes: [{
                                 ticks: {
@@ -475,6 +479,10 @@
                             ],
                             hoverOffset: 4
                         }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
                     }
                 });
 
@@ -511,6 +519,7 @@
                     },
                     options: {
                         responsive: true,
+                        maintainAspectRatio: false,
                         scales: {
                             xAxes: [{
                                 stacked: true,
@@ -569,6 +578,7 @@
                     },
                     options: {
                         responsive: true,
+                        maintainAspectRatio: false,
                         scales: {
                             yAxes: [{
                                 ticks: {

@@ -9,7 +9,7 @@
 
 <?= $this->section('content') ?>
                 <div class="row">
-                    <div class="col-7">
+                    <div class="col-lg-7 col-xs-12">
                         <?php 
                             $session = \Config\Services::session();
 
